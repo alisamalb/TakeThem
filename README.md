@@ -1,6 +1,6 @@
 # TakeThem
 
-TakeThem is python module for a a strategic card game played. This repository also offers a command-line interface (CLI) to play the game. The module is designed to be expandable with different computer agents that act as players. The game's mechanics are simple to understand but offer a depth of strategy as players must make decisions that influence the outcome in a dynamic playing environment.
+TakeThem is python module for a a strategic card game. This repository also offers a command-line interface (CLI) to play the game. The module is designed to be expandable with different computer agents that act as players. The game's mechanics are simple to understand but offer a depth of strategy as players must make decisions that influence the outcome in a dynamic playing environment.
 
 ## How to install
 Git clone the repository, and then run in the TakeThem directory:
@@ -17,7 +17,7 @@ The objective of "TakeThem" is to avoid collecting cards, as each card carries a
 
 ### Game Setup
 
-- The game is played using a deck of numbered cards, each card having a different penalty value.
+- The game is played using a deck of numbered cards, each card having a penalty value.
 - The total number of cards is 10 for each player + 4
 - At the start, each player is dealt 10 cards.
 - Four cards are placed face-up to form the beginning of four rows.
