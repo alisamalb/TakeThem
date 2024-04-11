@@ -14,5 +14,14 @@ class Card:
             return 5
         if (self.n%10)==0:
             return 3
+        if (self.n%5)==0:
+            return 2
         return 1
+    
+    def setOwner(self,owner):
+        """Takes note of the player's hand
+        it belongs to.
         
+        owner: Player intance.
+        """
+        self.lastOwner=owner

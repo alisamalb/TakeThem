@@ -16,5 +16,5 @@ while True:
     clear_screen()
     game.printPlayedCards()
     input("...")
-    #game.resolveTurn()
+    game.resolveTurn()
     clear_screen()

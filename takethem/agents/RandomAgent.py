@@ -17,6 +17,9 @@ class RandomAgent:
         else:
             self.hand+=self.game.deck.draw_cards(n)
         
+        self.hand.sort(key=lambda x: x.n)
+        for card in self.hand:
+            card.setOwner(self)
     
     def playCard(self):
         """Mimics player's turn.
@@ -24,3 +27,31 @@ class RandomAgent:
         """
         cardIndexToPlay=random.randrange(0,len(self.hand))
         return self.hand.pop(cardIndexToPlay)
+    
+    def resolveSmallNumberCard(self,card):
+        """The chosen card has a number smaller than
+        the ones found at the end of all rows. Choose
+        randomly which rows to take penalties from.
+
+        Args:
+            card (Card): The previosly chosen card.
+        """
+        
+        rowToTake=random.randrange(0,3)
+        self.takePenalty(rowToTake,card)
+
+    def takePenalty(self,rowIndex,card):   
+        """Sum the penalties for all the cards in the row
+        with index rowIndex and add the penalty points
+        to the player attribute.
+
+        Args:
+            rowIndex (int): The index of the row to replace with new card.
+            card (Card): The card the led to taking the penalties.
+        """
+        row=self.game.tableRows[rowIndex]
+        penalties=[card.penalty for card in row]
+        sumOfPenalties=sum(penalties)
+        self.penalties+=sumOfPenalties
+        
+        self.game.tableRows[rowIndex]=[card]

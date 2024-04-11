@@ -3,20 +3,24 @@ from .agents.cliPlayer import cliPlayer
 from .agents.RandomAgent import RandomAgent
 
 class Game:
-    def __init__(self,n_players=6):
+    def __init__(self,n_players=6,automaticRestart=False):
         """Initializes a game, based on the number of players.
         The spot of the first player is by default assigned to the user.
         
         Args:
             n_players (int, optional): The number of players. Defaults to 6.
+            automaticRestart(bool,optional): Ask for a prompt before starting new game.
         """
-        
+        self.automaticRestart=automaticRestart
         self.deck=Deck(n_players*10+4)
         
         #Create the players and assign them to this game
         self.players=[cliPlayer(self)]
         [self.players.append(RandomAgent(self)) for i in range(n_players-1)]
         
+        self.newGame()
+    
+    def newGame(self):    
         #Create empty table
         self.tableRows=[[],[],[],[]]
         self.playedCards=[]
@@ -43,6 +47,40 @@ class Game:
         
         for player in self.players:
             self.playedCards.append(player.playCard())
+    
+    
+    def resolveTurn(self):
+        self.playedCards.sort(key=lambda x: x.n)
+        for card in self.playedCards:
+            checkIfSmall=True
+            for row in self.tableRows:
+                if card.n>row[-1].n:
+                    checkIfSmall=False
+                    
+            if checkIfSmall:
+                self._resolveSmallNumberCard(card)
+            
+            else:
+                rowTarget=0
+                rowDifference=1000
+                
+                for i,row in enumerate(self.tableRows):
+                    difference=card.n-row[-1].n
+                    if difference>0 and difference<rowDifference:
+                        rowTarget=i
+                        rowDifference=difference
+                
+                if len(self.tableRows[rowTarget])<5:
+                    self.tableRows[rowTarget].append(card)   
+                else:
+                    cardOwner=card.lastOwner
+                    cardOwner.takePenalty(rowTarget,card)
+
+        self.playedCards=[]    
+
+    def _resolveSmallNumberCard(self,card):
+        cardOwner=card.lastOwner
+        cardOwner.resolveSmallNumberCard(card)
     
     def printRows(self):
         """Prints table rows.
@@ -88,6 +126,7 @@ class Game:
     def printPlayedCards(self):
         """Displays scoreboard, table rows and played cards.
         """
+        self.playedCards.sort(key=lambda x: x.n)
         self.printScoreboard()
         self.printRows()
         print("--Played cards--")
@@ -96,4 +135,17 @@ class Game:
                 row_string+=(f"{card.n} (+{card.penalty})".rjust(10," "))
         print(row_string)
 
-        
+    def checkGameEnded(self):
+        cardsToPlay=sum([len(player.hand) for player in self.players])
+        if cardsToPlay==0:
+            if self.automaticRestart:
+                self.newGame()
+            else:
+                response='42'
+                while response not in ["yes","no"]:
+                    response=input("Do you want to play again? [yes/no]\n")
+                
+                if response=="yes":
+                    self.newGame()
+                else:
+                    quit()
