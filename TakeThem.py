@@ -18,3 +18,4 @@ while True:
     input("...")
     game.resolveTurn()
     clear_screen()
+    game.checkGameEnded()

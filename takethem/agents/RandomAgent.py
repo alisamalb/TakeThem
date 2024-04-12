@@ -25,8 +25,9 @@ class RandomAgent:
         """Mimics player's turn.
         "Plays" (returns) a random card from the hand.
         """
-        cardIndexToPlay=random.randrange(0,len(self.hand))
-        return self.hand.pop(cardIndexToPlay)
+        if len(self.hand)>0:
+            cardIndexToPlay=random.randrange(0,len(self.hand))
+            return self.hand.pop(cardIndexToPlay)
     
     def resolveSmallNumberCard(self,card):
         """The chosen card has a number smaller than
@@ -55,3 +56,7 @@ class RandomAgent:
         self.penalties+=sumOfPenalties
         
         self.game.tableRows[rowIndex]=[card]
+    
+    def PlayAgain(self):
+        """Returns True to play again at the end of the game."""
+        return True

@@ -23,21 +23,25 @@ class cliPlayer:
         """Mimics player's turn.
         Asks for user input and "plays" (returns) a card.
         """
-        cardIndexToPlay=42
-        while cardIndexToPlay>len(self.hand):
-            userInput=input(f"Which card do you want to play? (enter number 1-{len(self.hand)})\n")
-            try:
-                int(userInput)
-            except:
-                print(f"That is not a valid integer.")
-                userInput=42
+        if len(self.hand)>0:
+            cardIndexToPlay=42
+            while cardIndexToPlay>len(self.hand):
+                userInput=input(f"Which card do you want to play? (enter number 1-{len(self.hand)})\n")
+                try:
+                    int(userInput)
+                except:
+                    print(f"That is not a valid integer.")
+                    userInput=42
 
-            if int(userInput)>len(self.hand):
-                print(f"The chosen number is too large. Max is {len(self.hand)}")
-            
-            else:
-                cardIndexToPlay=int(userInput)-1
-                return self.hand.pop(cardIndexToPlay)
+                if int(userInput)>len(self.hand):
+                    print(f"The chosen number is too large. Max is {len(self.hand)}")
+                
+                else:
+                    cardIndexToPlay=int(userInput)-1
+                    return self.hand.pop(cardIndexToPlay)
+        
+        else:
+            input("...\n")
     
     def resolveSmallNumberCard(self,card):
         """The chosen card has a number smaller than
@@ -78,5 +82,16 @@ class cliPlayer:
         self.penalties+=sumOfPenalties
         
         self.game.tableRows[rowIndex]=[card]
-
         
+    def playAgain(self):
+        """Ask the CLI user if they want to play again.
+        Return the output as a boolean.
+        """
+        response='42'
+        while response not in ["yes","no"]:
+            response=input("Do you want to play again? [yes/no]\n")
+        
+        if response=="yes":
+            return True
+        else:
+            return False

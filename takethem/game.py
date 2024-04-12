@@ -12,7 +12,6 @@ class Game:
             automaticRestart(bool,optional): Ask for a prompt before starting new game.
         """
         self.automaticRestart=automaticRestart
-        self.deck=Deck(n_players*10+4)
         
         #Create the players and assign them to this game
         self.players=[cliPlayer(self)]
@@ -21,6 +20,8 @@ class Game:
         self.newGame()
     
     def newGame(self):    
+        self.deck=Deck(len(self.players)*10+4)
+
         #Create empty table
         self.tableRows=[[],[],[],[]]
         self.playedCards=[]
@@ -77,7 +78,7 @@ class Game:
                     cardOwner.takePenalty(rowTarget,card)
 
         self.playedCards=[]    
-
+        
     def _resolveSmallNumberCard(self,card):
         cardOwner=card.lastOwner
         cardOwner.resolveSmallNumberCard(card)
@@ -141,11 +142,7 @@ class Game:
             if self.automaticRestart:
                 self.newGame()
             else:
-                response='42'
-                while response not in ["yes","no"]:
-                    response=input("Do you want to play again? [yes/no]\n")
-                
-                if response=="yes":
+                if self.players[0].playAgain():
                     self.newGame()
                 else:
                     quit()
