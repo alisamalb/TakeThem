@@ -3,7 +3,7 @@ from .agents.cliPlayer import cliPlayer
 from .agents.RandomAgent import RandomAgent
 
 class Game:
-    def __init__(self,n_players=6,automaticRestart=False):
+    def __init__(self,n_players=6,player1=cliPlayer, otherplayers=RandomAgent,automaticRestart=False):
         """Initializes a game, based on the number of players.
         The spot of the first player is by default assigned to the user.
         
@@ -14,8 +14,8 @@ class Game:
         self.automaticRestart=automaticRestart
         
         #Create the players and assign them to this game
-        self.players=[cliPlayer(self)]
-        [self.players.append(RandomAgent(self)) for i in range(n_players-1)]
+        self.players=[player1(self)]
+        [self.players.append(otherplayers(self)) for i in range(n_players-1)]
         
         self.newGame()
     
@@ -154,13 +154,17 @@ class Game:
                 row_string+=(f"{card.n} (+{card.penalty})".rjust(10," "))
         print(row_string)
 
-    def checkGameEnded(self):
+    def checkGameCanContinue(self):
         cardsToPlay=sum([len(player.hand) for player in self.players])
         if cardsToPlay==0:
             if self.automaticRestart:
                 self.newGame()
+                return True
             else:
                 if self.players[0].playAgain():
                     self.newGame()
+                    return True
                 else:
-                    quit()
+                    return False
+        else:
+            return True

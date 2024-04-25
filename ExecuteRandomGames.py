@@ -1,5 +1,9 @@
 from takethem.game import Game
+from takethem.agents.RandomAgent import RandomAgent
+from takethem.agents.RandomSavingAgent import RandomSavingAgent
+
 import os
+import time
 
 def clear_screen():
     # For Windows
@@ -9,13 +13,13 @@ def clear_screen():
     else:
         os.system('clear')
 
-game=Game()
-while True:
+game=Game(player1=RandomSavingAgent,otherplayers=RandomAgent,automaticRestart=False)
+playagain=True
+while playagain:
     game.printPlayersHands()
     game.playerAction()
     clear_screen()
     game.printPlayedCards()
-    input("...")
     game.resolveTurn()
     clear_screen()
-    game.checkGameCanContinue()
+    playagain=game.checkGameCanContinue()
