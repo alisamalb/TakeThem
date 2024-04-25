@@ -54,7 +54,7 @@ class RandomAgent:
         penalties=[card.penalty for card in row]
         sumOfPenalties=sum(penalties)
         self.penalties+=sumOfPenalties
-        
+        self.game.removedCards+=self.game.tableRows[rowIndex]
         self.game.tableRows[rowIndex]=[card]
     
     def PlayAgain(self):

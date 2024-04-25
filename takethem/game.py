@@ -30,6 +30,10 @@ class Game:
         #Distribute cards
         self._dealCards()
         self._prepareTableRows()
+        
+    def status(self):
+        """Returns the status of the games as a list object."""
+        return [self.tableRows, self.playedCards, self.removedCards]
 
     def _dealCards(self):
         "Draws and distributes 10 cards for each player."
@@ -51,8 +55,19 @@ class Game:
     
     
     def resolveTurn(self):
+        """Resolve played cards in two stages.
+        1. Check if one of the played card is smaller
+        than all the cards and end of the rows on the table.
+        If so, the player who chose that card, needs to select
+        a row to take.
+        2. Places the other cards at the end of the right rows.
+        """
+        
         self.playedCards.sort(key=lambda x: x.n)
+        
         for card in self.playedCards:
+            
+            #First stage
             checkIfSmall=True
             for row in self.tableRows:
                 if card.n>row[-1].n:
@@ -61,10 +76,11 @@ class Game:
             if checkIfSmall:
                 self._resolveSmallNumberCard(card)
             
+            #Second stage
             else:
                 rowTarget=0
                 rowDifference=1000
-                
+                #Find row with minimum difference between played and ending card
                 for i,row in enumerate(self.tableRows):
                     difference=card.n-row[-1].n
                     if difference>0 and difference<rowDifference:
@@ -74,6 +90,8 @@ class Game:
                 if len(self.tableRows[rowTarget])<5:
                     self.tableRows[rowTarget].append(card)   
                 else:
+                    #If placed card is the 6th, the player takes row and
+                    #corredponding penalty
                     cardOwner=card.lastOwner
                     cardOwner.takePenalty(rowTarget,card)
 

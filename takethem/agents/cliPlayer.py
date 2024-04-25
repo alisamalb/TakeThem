@@ -80,7 +80,7 @@ class cliPlayer:
         penalties=[card.penalty for card in row]
         sumOfPenalties=sum(penalties)
         self.penalties+=sumOfPenalties
-        
+        self.game.removedCards+=self.game.tableRows[rowIndex]
         self.game.tableRows[rowIndex]=[card]
         
     def playAgain(self):
