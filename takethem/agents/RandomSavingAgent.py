@@ -52,6 +52,7 @@ class RandomSavingAgent:
         
         for row in self.game.status()[0]:
             self.status+=str([card.n for card in row])+","
+        self.status+=str([card.n for card in self.game.status()[2]])+","
         self.status+=str([card.n for card in self.hand])
  
         
