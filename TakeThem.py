@@ -1,4 +1,5 @@
 from takethem.game import Game
+from takethem.agents.NNagent_25Kparms import AIagent
 import os
 
 def clear_screen():
@@ -9,7 +10,7 @@ def clear_screen():
     else:
         os.system('clear')
 
-game=Game()
+game=Game(otherplayers=AIagent)
 while True:
     game.printPlayersHands()
     game.playerAction()

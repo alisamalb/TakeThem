@@ -45,7 +45,7 @@ class RandomAgent:
         Args:
             card (Card): The previously chosen card.
         """
-        rowToTake=random.randrange(0,3)
+        rowToTake=random.randrange(0,4)
         self.takePenalty(rowToTake,card)
 
     def takePenalty(self,rowIndex,card):   

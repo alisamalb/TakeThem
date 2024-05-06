@@ -111,10 +111,11 @@ class Game:
                 row_string+=(f"{card.n} (+{card.penalty})".rjust(10," "))
             print(row_string)
             
-    def printScoreboard(self):
+    def printScoreboard(self,normalize=True):
         print("--Scoreboard--")
+        minimum=min([p.penalties for p in self.players])
         for i,player in enumerate(self.players):
-            print(f"Player {i+1}: {player.penalties} pt.")
+            print(f"Player {i+1}: {player.penalties-minimum*normalize} pt.")
             
     def printPlayersHands(self,full=False):
         """Displays scoreboard, table rows and players' hands.
