@@ -3,7 +3,7 @@ from .agents.cliPlayer import cliPlayer
 from .agents.RandomAgent import RandomAgent
 
 class Game:
-    def __init__(self,n_players=6,player1=cliPlayer, otherplayers=RandomAgent,automaticRestart=False):
+    def __init__(self,n_players=6,player1=cliPlayer, otherplayers=RandomAgent,automaticRestart=False,playerClasses=None):
         """Initializes a game, based on the number of players.
         The spot of the first player is by default assigned to the user.
         
@@ -16,6 +16,8 @@ class Game:
         #Create the players and assign them to this game
         self.players=[player1(self)]
         [self.players.append(otherplayers(self)) for i in range(n_players-1)]
+        if playerClasses:
+            self.players=[player(self) for player in playerClasses]
         
         self.newGame()
     
@@ -30,6 +32,10 @@ class Game:
         #Distribute cards
         self._dealCards()
         self._prepareTableRows()
+        
+        #Reset penalties
+        #for p in self.players:
+        #    p.penalties=0
         
     def status(self):
         """Returns the status of the games as a list object."""
@@ -111,7 +117,7 @@ class Game:
                 row_string+=(f"{card.n} (+{card.penalty})".rjust(10," "))
             print(row_string)
             
-    def printScoreboard(self,normalize=True):
+    def printScoreboard(self,normalize=False):
         print("--Scoreboard--")
         minimum=min([p.penalties for p in self.players])
         for i,player in enumerate(self.players):

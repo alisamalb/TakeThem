@@ -1,6 +1,6 @@
 from takethem.game import Game
 from takethem.agents.RandomAgent import RandomAgent
-from takethem.agents.NNagent_25Kparms import AIagent
+from takethem.agents.NNagent import AIagent
 
 import os
 import time
